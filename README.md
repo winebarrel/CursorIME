@@ -6,7 +6,8 @@ the badge disappears, so a glance at the cursor tells you which mode you are
 in.
 
 It reads the current input mode through the Text Input Sources API, so it
-works with any Japanese IME (Kotoeri, ATOK, and so on) without extra setup.
+works with Japanese IMEs such as Kotoeri, ATOK, and Google Japanese Input
+without extra setup.
 
 ## Usage
 
