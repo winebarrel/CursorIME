@@ -1,11 +1,12 @@
 import Carbon
 
-/// Whether the keyboard is currently in a Japanese conversion mode.
+/// Whether the keyboard is producing something other than standard half-width
+/// alphanumeric.
 ///
-/// We look at the input *mode* rather than the input source id, because a single
-/// IME (ATOK, Kotoeri, ...) keeps the same source while switching between kana
-/// input and direct alphanumeric input. The mode ids below are Apple's standard
-/// values shared across IMEs, so this stays vendor independent.
+/// A single IME (ATOK, Kotoeri, ...) keeps one input source while switching
+/// between direct Roman input and kana or other modes, so we read the input
+/// *mode* rather than the source id. Only the shared Roman mode types plain
+/// ASCII; every other mode does not.
 enum IMEState {
     case japanese
     case roman
@@ -21,22 +22,10 @@ func currentIMEState() -> IMEState {
         return Unmanaged<CFString>.fromOpaque(ptr).takeUnretainedValue() as String
     }
 
-    // Preferred signal: the input mode distinguishes あ (kana) from 英数 (Roman)
-    // within one Japanese IME.
-    if let mode = property(kTISPropertyInputModeID) {
-        if mode == "com.apple.inputmethod.Roman" {
-            return .roman
-        }
-        if mode.contains("Japanese") {
-            return .japanese
-        }
-    }
-
-    // Fallback for sources that expose no mode (plain keyboard layouts, or an
-    // IME sitting in its base state).
-    if let id = property(kTISPropertyInputSourceID), id.contains("Japanese") {
-        return .japanese
-    }
-
-    return .roman
+    // Plain keyboard layouts (US, ...) expose no input mode and type standard
+    // alphanumeric. An input method exposes a mode; only its direct Roman mode
+    // is standard, so anything else (kana, katakana, full-width, other scripts)
+    // shows the badge.
+    guard let mode = property(kTISPropertyInputModeID) else { return .roman }
+    return mode == "com.apple.inputmethod.Roman" ? .roman : .japanese
 }
