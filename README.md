@@ -39,7 +39,3 @@ defaults delete kCFPreferencesAnyApplication TSMLanguageIndicatorEnabled
 CursorIME does not change this setting for you. The key lives in the global
 preferences domain, which a sandboxed app cannot write, and the change only
 applies after a re-login, so it is left as a one-time manual step.
-
-## Note
-
-App icon from https://icon.kitchen
