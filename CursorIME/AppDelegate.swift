@@ -39,10 +39,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func setupStatusItem() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        statusItem.button?.image = NSImage(
-            systemSymbolName: "character.cursor.ibeam",
-            accessibilityDescription: "CursorIME"
-        )
+        let icon = NSImage(named: "MenuBarIcon")
+        icon?.isTemplate = true
+        icon?.accessibilityDescription = "CursorIME"
+        statusItem.button?.image = icon
 
         let menu = NSMenu()
         menu.delegate = self
