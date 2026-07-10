@@ -20,7 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var lastMouse = NSPoint(x: -1, y: -1)
     private var frame = 0
     private var timer: Timer?
-    private var imeObserver: Any?
+    private var imeObserver: NSObjectProtocol?
 
     func applicationDidFinishLaunching(_: Notification) {
         setupBadge()
